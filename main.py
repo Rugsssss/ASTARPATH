@@ -2,6 +2,9 @@ import pygame
 import math
 from queue import PriorityQueue
 
+
+#SETTING UP THE DISPLAY AND BASIC FUNCTIONS
+
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("A* Path Finding Algorithm")
@@ -70,7 +73,7 @@ class Spot:
 	def draw(self, win):
 		pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
-	def update_neighbors(self, grid):
+	def update_neighbors(self, grid): #Code for checking on the neighbors of current spot
 		self.neighbors = []
 		if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # DOWN
 			self.neighbors.append(grid[self.row + 1][self.col])
@@ -84,7 +87,7 @@ class Spot:
 		if self.col > 0 and not grid[self.row][self.col - 1].is_barrier(): # LEFT
 			self.neighbors.append(grid[self.row][self.col - 1])
 
-	def __lt__(self, other):
+	def __lt__(self, other): #LT stands for Less Than
 		return False
 
 
@@ -101,7 +104,7 @@ def reconstruct_path(came_from, current, draw):
 		draw()
 
 
-def algorithm(draw, grid, start, end):
+def algorithm(draw, grid, start, end): #Main procedure for the A* Pathfinding Algorithm
 	count = 0
 	open_set = PriorityQueue()
 	open_set.put((0, count, start))
@@ -126,7 +129,7 @@ def algorithm(draw, grid, start, end):
 			end.make_end()
 			return True
 
-		for neighbor in current.neighbors:
+		for neighbor in current.neighbors: #Main logic   
 			temp_g_score = g_score[current] + 1
 
 			if temp_g_score < g_score[neighbor]:
@@ -188,7 +191,7 @@ def get_clicked_pos(pos, rows, width):
 	return row, col
 
 
-def main(win, width):
+def main(win, width): #Using all defined procedures in conjuction to create a working application
 	ROWS = 50
 	grid = make_grid(ROWS, width)
 
